@@ -8,15 +8,11 @@ import (
 )
 
 func main() {
+	var curFocusID i3.NodeID
 	var err error
 
 	recv := i3.Subscribe(i3.WindowEventType)
 	defer recv.Close()
-
-	curFocusID, err := i3win.GetFocusedWindowID()
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	for recv.Next() {
 		event := recv.Event().(*i3.WindowEvent)
