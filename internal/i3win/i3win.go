@@ -47,7 +47,7 @@ func WindowFocusEventHandler(oldID, curID i3.NodeID) (err error) {
 }
 
 func WindowCloseEventHandler(curID i3.NodeID) (err error) {
-	db.DeleteWindow(int64(curID))
+	db.DeleteWindowLang(int64(curID))
 
 	return nil
 }

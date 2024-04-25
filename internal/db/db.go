@@ -1,21 +1,35 @@
 package db
 
-var langMap map[int64]string
+var (
+	winLang map[int64]string
+	wsLang  map[string]string
+)
 
 func init() {
-	langMap = make(map[int64]string)
+	winLang = make(map[int64]string)
+	wsLang = make(map[string]string)
 }
 
 func GetWindowLang(id int64) (lang string, ok bool) {
-	lang, ok = langMap[id]
+	lang, ok = winLang[id]
 
 	return lang, ok
 }
 
 func SetWindowLang(id int64, lang string) {
-	langMap[id] = lang
+	winLang[id] = lang
 }
 
-func DeleteWindow(id int64) {
-	delete(langMap, id)
+func DeleteWindowLang(id int64) {
+	delete(winLang, id)
+}
+
+func GetWorkspaceLang(name string) (lang string, ok bool) {
+	lang, ok = wsLang[name]
+
+	return lang, ok
+}
+
+func SetWorkspaceLang(name, lang string) {
+	wsLang[name] = lang
 }
