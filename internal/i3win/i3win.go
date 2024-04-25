@@ -12,9 +12,13 @@ func GetFocusedWindowID() (id i3.NodeID, err error) {
 		return id, err
 	}
 
-	id = tree.Root.FindFocused(func(node *i3.Node) bool {
+	focusedWin := tree.Root.FindFocused(func(node *i3.Node) bool {
 		return node.Focused && node.Type == i3.Con
-	}).ID
+	})
+
+	if focusedWin != nil {
+		id = focusedWin.ID
+	}
 
 	return id, err
 }
