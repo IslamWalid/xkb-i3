@@ -14,6 +14,12 @@ func main() {
 	recv := i3.Subscribe(i3.WindowEventType)
 	defer recv.Close()
 
+
+	curFocusID, err = i3win.GetFocusedWindowID()
+	if err != nil {
+        log.Fatal(err)
+    }
+
 	for recv.Next() {
 		event := recv.Event().(*i3.WindowEvent)
 
@@ -33,7 +39,7 @@ func main() {
 		}
 
 		if err != nil {
-			log.Fatal(err)
+            log.Fatal(err)
 		}
 	}
 }
