@@ -8,12 +8,11 @@ import (
 
 func WindowEventHandler(xkb xkeyboard.XKeyboard) error {
 	var curFocusID i3.NodeID
-	var err error
 
 	recv := i3.Subscribe(i3.WindowEventType)
 	defer recv.Close()
 
-	curFocusID, err = getFocusedWindowID()
+	curFocusID, err := getFocusedWindowID()
 	if err != nil {
 		return err
 	}
@@ -23,21 +22,14 @@ func WindowEventHandler(xkb xkeyboard.XKeyboard) error {
 
 		switch event.Change {
 		case "focus":
-			err = focusEventHandler(xkb, curFocusID, event.Container.ID)
+			focusEventHandler(xkb, curFocusID, event.Container.ID)
 			curFocusID = event.Container.ID
 
 		case "close":
-			err = closeEventHandler(event.Container.ID)
+			closeEventHandler(event.Container.ID)
 			if event.Container.Focused {
 				curFocusID = 0
 			}
-
-		default:
-			continue
-		}
-
-		if err != nil {
-			return err
 		}
 	}
 
@@ -61,7 +53,7 @@ func getFocusedWindowID() (id i3.NodeID, err error) {
 	return id, err
 }
 
-func focusEventHandler(xkb xkeyboard.XKeyboard, oldID, curID i3.NodeID) (err error) {
+func focusEventHandler(xkb xkeyboard.XKeyboard, oldID, curID i3.NodeID) {
 	var index int
 	var ok bool
 
@@ -73,13 +65,9 @@ func focusEventHandler(xkb xkeyboard.XKeyboard, oldID, curID i3.NodeID) (err err
 
 	if index, ok = db.GetWindowLayoutIndex(int64(curID)); ok {
 		xkb.SetLayoutIndex(index)
-	}
 
-	return nil
 }
 
-func closeEventHandler(curID i3.NodeID) (err error) {
+func closeEventHandler(curID i3.NodeID) {
 	db.DeleteWindowLayoutIndex(int64(curID))
-
-	return nil
 }
