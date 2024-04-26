@@ -1,18 +1,19 @@
 package i3win
 
 import (
-	"github.com/IslamWalid/xkb-i3/internal/db"
-	"github.com/IslamWalid/xkb-i3/internal/xkeyboard"
+	"strconv"
+
+	"github.com/IslamWalid/xkb-i3/internal/evhand"
 	"go.i3wm.org/i3/v4"
 )
 
-func WindowEventHandler(xkb xkeyboard.XKeyboard) error {
-	var curFocusID i3.NodeID
+func WindowEventListner() error {
+	var curId, oldId int64
 
 	recv := i3.Subscribe(i3.WindowEventType)
 	defer recv.Close()
 
-	curFocusID, err := getFocusedWindowID()
+	curId, err := getFocusedWindowId()
 	if err != nil {
 		return err
 	}
@@ -22,13 +23,14 @@ func WindowEventHandler(xkb xkeyboard.XKeyboard) error {
 
 		switch event.Change {
 		case "focus":
-			focusEventHandler(xkb, curFocusID, event.Container.ID)
-			curFocusID = event.Container.ID
+			oldId = int64(curId)
+			curId = int64(event.Container.ID)
+			evhand.FocusEventHandler(strconv.FormatInt(curId, 10), strconv.FormatInt(oldId, 10))
 
 		case "close":
-			closeEventHandler(event.Container.ID)
+			evhand.CloseEventHandler(strconv.FormatInt(int64(event.Container.ID), 10))
 			if event.Container.Focused {
-				curFocusID = 0
+				curId = 0
 			}
 		}
 	}
@@ -36,7 +38,7 @@ func WindowEventHandler(xkb xkeyboard.XKeyboard) error {
 	return nil
 }
 
-func getFocusedWindowID() (id i3.NodeID, err error) {
+func getFocusedWindowId() (id int64, err error) {
 	tree, err := i3.GetTree()
 	if err != nil {
 		return id, err
@@ -47,27 +49,8 @@ func getFocusedWindowID() (id i3.NodeID, err error) {
 	})
 
 	if focusedWin != nil {
-		id = focusedWin.ID
+		id = int64(focusedWin.ID)
 	}
 
 	return id, err
-}
-
-func focusEventHandler(xkb xkeyboard.XKeyboard, oldID, curID i3.NodeID) {
-	var index int
-	var ok bool
-
-	index = xkb.GetLayoutIndex()
-
-	if oldID != 0 {
-		db.SetWindowLayoutIndex(int64(oldID), index)
-	}
-
-	if index, ok = db.GetWindowLayoutIndex(int64(curID)); ok {
-		xkb.SetLayoutIndex(index)
-
-}
-
-func closeEventHandler(curID i3.NodeID) {
-	db.DeleteWindowLayoutIndex(int64(curID))
 }
