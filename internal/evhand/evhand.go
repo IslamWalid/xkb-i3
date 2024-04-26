@@ -1,7 +1,7 @@
 package evhand
 
 import (
-	"github.com/IslamWalid/xkb-i3/internal/db"
+	"github.com/IslamWalid/xkb-i3/internal/database"
 	"github.com/IslamWalid/xkb-i3/internal/notify"
 	"github.com/IslamWalid/xkb-i3/internal/xkb"
 )
@@ -13,10 +13,10 @@ func FocusEventHandler(oldId, curId string) error {
 	index = xkb.GetLayoutIndex()
 
 	if oldId != "0" {
-		db.SetLayoutIndex(oldId, index)
+		database.SetLayoutIndex(oldId, index)
 	}
 
-	if index, ok = db.GetLayoutIndex(curId); ok {
+	if index, ok = database.GetLayoutIndex(curId); ok {
 		xkb.SetLayoutIndex(index)
 
 		return notify.Notify()
@@ -26,5 +26,5 @@ func FocusEventHandler(oldId, curId string) error {
 }
 
 func CloseEventHandler(id string) {
-	db.DeleteLayoutIndex(id)
+	database.DeleteLayoutIndex(id)
 }

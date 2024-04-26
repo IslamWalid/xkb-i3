@@ -1,4 +1,4 @@
-package db
+package database
 
 var layoutIndex map[string]int
 
