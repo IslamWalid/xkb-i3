@@ -18,7 +18,7 @@ var DefaultOpts Options
 func init() {
 	DefaultOpts = Options{
 		Mode:           WindowMode,
-		I3Blocks:       false,
+		I3Blocks:       true,
 		I3BlocksSignal: "SIGRTMIN+12",
 	}
 }
