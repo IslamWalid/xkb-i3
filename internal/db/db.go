@@ -1,4 +1,4 @@
-package database
+package db
 
 type DB struct {
 	layoutIndex map[string]int
