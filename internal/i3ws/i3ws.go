@@ -6,13 +6,8 @@ import (
 	"go.i3wm.org/i3/v4"
 )
 
-func WorkspaceEventHandler() error {
+func WorkspaceEventHandler(xkb xkeyboard.XKeyboard) error {
 	var err error
-
-	xkb, err := xkeyboard.New()
-	if err != nil {
-		return err
-	}
 
 	receiver := i3.Subscribe(i3.WorkspaceEventType)
 	defer receiver.Close()

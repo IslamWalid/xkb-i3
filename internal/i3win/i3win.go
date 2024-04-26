@@ -6,14 +6,9 @@ import (
 	"go.i3wm.org/i3/v4"
 )
 
-func WindowEventHandler() error {
+func WindowEventHandler(xkb xkeyboard.XKeyboard) error {
 	var curFocusID i3.NodeID
 	var err error
-
-	xkb, err := xkeyboard.New()
-	if err != nil {
-		return err
-	}
 
 	recv := i3.Subscribe(i3.WindowEventType)
 	defer recv.Close()
