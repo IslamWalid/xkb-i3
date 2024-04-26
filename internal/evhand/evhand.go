@@ -6,17 +6,17 @@ import (
 	"github.com/IslamWalid/xkb-i3/internal/xkb"
 )
 
-func FocusEventHandler(oldID, curID string) error {
+func FocusEventHandler(oldId, curId string) error {
 	var index int
 	var ok bool
 
 	index = xkb.GetLayoutIndex()
 
-	if len(oldID) > 0 {
-		db.SetLayoutIndex(oldID, index)
+	if oldId != "0" {
+		db.SetLayoutIndex(oldId, index)
 	}
 
-	if index, ok = db.GetLayoutIndex(curID); ok {
+	if index, ok = db.GetLayoutIndex(curId); ok {
 		xkb.SetLayoutIndex(index)
 
 		return notify.Notify()
@@ -25,6 +25,6 @@ func FocusEventHandler(oldID, curID string) error {
 	return nil
 }
 
-func CloseEventHandler(curID string) {
-	db.DeleteLayoutIndex(curID)
+func CloseEventHandler(id string) {
+	db.DeleteLayoutIndex(id)
 }
