@@ -11,7 +11,9 @@ func Notify() error {
 	opts := options.DefaultOpts
 
 	if opts.I3Blocks {
-		err := exec.Command("pkill", fmt.Sprint("-%s", opts.I3BlocksSignal), "i3blocks").Run()
+		signal := fmt.Sprintf("-%s", opts.I3BlocksSignal)
+
+		err := exec.Command("pkill", signal, "i3blocks").Run()
 		if err != nil {
 			return err
 		}
