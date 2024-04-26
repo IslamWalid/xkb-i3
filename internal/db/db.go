@@ -1,35 +1,35 @@
 package db
 
 var (
-	winLang map[int64]string
-	wsLang  map[string]string
+	winLayoutIndex map[int64]int
+	wsLayoutIndex  map[string]int
 )
 
 func init() {
-	winLang = make(map[int64]string)
-	wsLang = make(map[string]string)
+	winLayoutIndex = make(map[int64]int)
+	wsLayoutIndex = make(map[string]int)
 }
 
-func GetWindowLang(id int64) (lang string, ok bool) {
-	lang, ok = winLang[id]
+func GetWindowLayoutIndex(id int64) (index int, ok bool) {
+	index, ok = winLayoutIndex[id]
 
-	return lang, ok
+	return index, ok
 }
 
-func SetWindowLang(id int64, lang string) {
-	winLang[id] = lang
+func SetWindowLayoutIndex(id int64, index int) {
+	winLayoutIndex[id] = index
 }
 
-func DeleteWindowLang(id int64) {
-	delete(winLang, id)
+func DeleteWindowLayoutIndex(id int64) {
+	delete(winLayoutIndex, id)
 }
 
-func GetWorkspaceLang(name string) (lang string, ok bool) {
-	lang, ok = wsLang[name]
+func GetWorkspaceLayoutIndex(name string) (index int, ok bool) {
+	index, ok = wsLayoutIndex[name]
 
-	return lang, ok
+	return index, ok
 }
 
-func SetWorkspaceLang(name, lang string) {
-	wsLang[name] = lang
+func SetWorkspaceLayoutIndex(name string, index int) {
+	wsLayoutIndex[name] = index
 }
