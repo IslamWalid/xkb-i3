@@ -1,12 +1,12 @@
-package ehand
+package evhand
 
 import (
-	"github.com/IslamWalid/xkb-i3/internal/database"
+	"github.com/IslamWalid/xkb-i3/internal/db"
 	"github.com/IslamWalid/xkb-i3/internal/notify"
-	"github.com/IslamWalid/xkb-i3/internal/xkeyboard"
+	"github.com/IslamWalid/xkb-i3/internal/xkb"
 )
 
-func FocusEventHandler(xkb xkeyboard.XKeyboard, db database.DB, oldID, curID string) error {
+func FocusEventHandler(oldID, curID string) error {
 	var index int
 	var ok bool
 
@@ -23,4 +23,8 @@ func FocusEventHandler(xkb xkeyboard.XKeyboard, db database.DB, oldID, curID str
 	}
 
 	return nil
+}
+
+func CloseEventHandler(curID string) {
+	db.DeleteLayoutIndex(curID)
 }
