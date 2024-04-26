@@ -8,7 +8,7 @@ import (
 )
 
 func WindowEventListner() error {
-	var curId, oldId int64
+	var curId, oldId string
 
 	recv := i3.Subscribe(i3.WindowEventType)
 	defer recv.Close()
@@ -23,14 +23,14 @@ func WindowEventListner() error {
 
 		switch event.Change {
 		case "focus":
-			oldId = int64(curId)
-			curId = int64(event.Container.ID)
-			evhand.FocusEventHandler(strconv.FormatInt(curId, 10), strconv.FormatInt(oldId, 10))
+			oldId = curId
+			curId = strconv.FormatInt(int64(event.Container.ID), 10)
+			evhand.FocusEventHandler(oldId, curId)
 
 		case "close":
 			evhand.CloseEventHandler(strconv.FormatInt(int64(event.Container.ID), 10))
 			if event.Container.Focused {
-				curId = 0
+				curId = ""
 			}
 		}
 	}
@@ -38,7 +38,7 @@ func WindowEventListner() error {
 	return nil
 }
 
-func getFocusedWindowId() (id int64, err error) {
+func getFocusedWindowId() (id string, err error) {
 	tree, err := i3.GetTree()
 	if err != nil {
 		return id, err
@@ -49,7 +49,7 @@ func getFocusedWindowId() (id int64, err error) {
 	})
 
 	if focusedWin != nil {
-		id = int64(focusedWin.ID)
+		id = strconv.FormatInt(int64(focusedWin.ID), 10)
 	}
 
 	return id, err

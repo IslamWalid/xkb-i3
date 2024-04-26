@@ -12,7 +12,7 @@ func FocusEventHandler(oldId, curId string) error {
 
 	index = xkb.GetLayoutIndex()
 
-	if oldId != "0" {
+	if len(oldId) > 0 {
 		database.SetLayoutIndex(oldId, index)
 	}
 
