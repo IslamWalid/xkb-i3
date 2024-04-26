@@ -1,12 +1,16 @@
 package i3ws
 
 import (
-	"github.com/IslamWalid/xkb-i3/internal/db"
-	"github.com/IslamWalid/xkb-i3/internal/xkeyboard"
+	"strconv"
+
+	"github.com/IslamWalid/xkb-i3/internal/evhand"
 	"go.i3wm.org/i3/v4"
 )
 
-func WorkspaceEventHandler(xkb xkeyboard.XKeyboard) {
+func WorkspaceEventListner() error {
+	var oldId, curId string
+	var err error
+
 	receiver := i3.Subscribe(i3.WorkspaceEventType)
 	defer receiver.Close()
 
@@ -14,21 +18,15 @@ func WorkspaceEventHandler(xkb xkeyboard.XKeyboard) {
 		event := receiver.Event().(*i3.WorkspaceEvent)
 		switch event.Change {
 		case "focus":
-			focusEventHandler(xkb, event)
+			oldId = strconv.FormatInt(int64(event.Old.ID), 10)
+			curId = strconv.FormatInt(int64(event.Current.ID), 10)
+			err = evhand.FocusEventHandler(oldId, curId)
 		}
 
+		if err != nil {
+			return err
+		}
 	}
-}
 
-func focusEventHandler(xkb xkeyboard.XKeyboard, event *i3.WorkspaceEvent) {
-	var index int
-	var ok bool
-
-	index = xkb.GetLayoutIndex()
-
-	db.SetWorkspaceLayoutIndex(event.Old.Name, index)
-
-	if index, ok = db.GetWorkspaceLayoutIndex(event.Current.Name); ok {
-		xkb.SetLayoutIndex(index)
-	}
+	return nil
 }
