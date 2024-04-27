@@ -8,10 +8,8 @@ import (
 )
 
 func Notify() error {
-	opts := options.DefaultOpts
-
-	if opts.I3Blocks {
-		signal := fmt.Sprintf("-%s", opts.I3BlocksSignal)
+	if options.Opts.I3Blocks {
+		signal := fmt.Sprintf("-%s", options.Opts.I3BlocksSignal)
 
 		err := exec.Command("pkill", signal, "i3blocks").Run()
 		if err != nil {
