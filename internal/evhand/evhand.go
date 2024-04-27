@@ -3,21 +3,21 @@ package evhand
 import (
 	"github.com/IslamWalid/xkb-i3/internal/database"
 	"github.com/IslamWalid/xkb-i3/internal/notify"
-	"github.com/IslamWalid/xkb-i3/internal/xkb"
+	"github.com/IslamWalid/xkb-i3/internal/xkeyboard"
 )
 
 func FocusEventHandler(oldId, curId string) error {
 	var index int
 	var ok bool
 
-	index = xkb.GetLayoutIndex()
+	index = xkeyboard.GetLayoutIndex()
 
 	if len(oldId) > 0 {
 		database.SetLayoutIndex(oldId, index)
 	}
 
 	if index, ok = database.GetLayoutIndex(curId); ok {
-		xkb.SetLayoutIndex(index)
+		xkeyboard.SetLayoutIndex(index)
 
 		return notify.Notify()
 	}

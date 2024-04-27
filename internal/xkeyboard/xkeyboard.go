@@ -1,4 +1,4 @@
-package xkb
+package xkeyboard
 
 /*
 #cgo pkg-config: x11
