@@ -3,10 +3,10 @@ package options
 import "flag"
 
 const (
-	persistDesc  = "Persist workspace keyboard layout in database (applicable with workspace mode only)"
-	helpDesc     = "Print usage message"
-	i3blocksDesc = "Set signal to be sent to i3blocks after changing the keyboard layout (used to notify i3blocks to update its state)"
-	modeDesc     = "Specify the mode: workspace or window (defaut is window)"
+	persistDesc  = `Persist workspace keyboard layout in database (applicable with "workspace" mode only)`
+	helpDesc     = `Print usage message`
+	i3blocksDesc = `Set signal to notify i3blocks after changing the keyboard layout`
+	modeDesc     = `Specify the mode: "workspace" or "window" (defaut is "window")`
 )
 
 type Options struct {
