@@ -11,7 +11,7 @@ const (
 
 type Options struct {
 	Mode           Mode
-	Persist        bool
+	Persist        bool // not implemented yet
 	Help           bool
 	I3Blocks       bool
 	I3BlocksSignal string
@@ -24,11 +24,10 @@ func init() {
 }
 
 func Parse() (opts Options) {
-	var persist, help bool
+	var help bool
 	var i3blocks string
 	var mode Mode
 
-	flag.BoolVar(&persist, "persist", false, persistDesc)
 	flag.BoolVar(&help, "help", false, helpDesc)
 	flag.StringVar(&i3blocks, "i3blocks", "", i3blocksDesc)
 	flag.Var(&mode, "mode", modeDesc)
@@ -37,7 +36,7 @@ func Parse() (opts Options) {
 
 	return Options{
 		Mode:           mode,
-		Persist:        persist,
+		Persist:        false,
 		Help:           help,
 		I3Blocks:       len(i3blocks) > 0,
 		I3BlocksSignal: i3blocks,
