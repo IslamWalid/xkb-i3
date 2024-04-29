@@ -3,6 +3,10 @@
 **xkb-i3** is a daemon that automate switching keyboard layout(keyboard language).
 On changing focus from some window or workspace to another, **xkb-i3** will automatically switch the keyboard layout to the last layout used in the newly focused window or workspace.
 
+## Requirements
+- [Xlib](https://gitlab.freedesktop.org/xorg/lib/libx11)
+- Go 1.22+
+
 ## Installation
 
 ```sh
