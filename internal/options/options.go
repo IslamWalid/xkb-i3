@@ -20,10 +20,6 @@ type Options struct {
 var Opts Options
 
 func init() {
-	Opts = Parse()
-}
-
-func Parse() (opts Options) {
 	var help bool
 	var i3blocks string
 	var mode Mode
@@ -34,7 +30,7 @@ func Parse() (opts Options) {
 
 	flag.Parse()
 
-	return Options{
+	Opts = Options{
 		Mode:           mode,
 		Persist:        false,
 		Help:           help,
