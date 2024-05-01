@@ -10,11 +10,11 @@ import (
 func WorkspaceEventListner() error {
 	var err error
 
-	receiver := i3.Subscribe(i3.WorkspaceEventType)
-	defer receiver.Close()
+	recv := i3.Subscribe(i3.WorkspaceEventType)
+	defer recv.Close()
 
-	for receiver.Next() {
-		event := receiver.Event().(*i3.WorkspaceEvent)
+	for recv.Next() {
+		event := recv.Event().(*i3.WorkspaceEvent)
 		switch event.Change {
 		case "focus":
 			err = focusEvent(event.Old.Name, event.Current.Name)
